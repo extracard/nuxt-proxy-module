@@ -17,7 +17,7 @@
     "test": "yarn lint && jest"
   },
   "dependencies": {
-    "http-proxy-middleware": "^1.0.6"
+    "http-proxy-middleware": "^2.0.9"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.7",
@@ -26,7 +26,7 @@
     "@nuxtjs/eslint-config-typescript": "latest",
     "eslint": "latest",
     "jest": "latest",
-    "nuxt": "^2.14.12",
+    "nuxt": "^3.19.0",
     "siroc": "latest",
     "standard-version": "latest"
   },
