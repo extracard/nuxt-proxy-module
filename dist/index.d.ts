@@ -1,12 +1,12 @@
 import { Module } from '@nuxt/types';
 import { Options, Filter } from 'http-proxy-middleware';
 
-declare type ProxyContext = Filter | Options;
-declare type ProxyOptionsObject = {
+type ProxyContext = Filter;
+type ProxyOptionsObject = {
     [target: string]: Options;
 };
-declare type ProxyOptionsArray = Array<[ProxyContext, Options?] | Options | string>;
-declare type NuxtProxyOptions = ProxyOptionsObject | ProxyOptionsArray;
+type ProxyOptionsArray = Array<[ProxyContext, Options?] | Options | string>;
+type NuxtProxyOptions = ProxyOptionsObject | ProxyOptionsArray;
 
 declare module '@nuxt/types' {
     interface Configuration {
@@ -15,4 +15,4 @@ declare module '@nuxt/types' {
 }
 declare const proxyModule: Module<Options>;
 
-export default proxyModule;
+export { proxyModule as default };

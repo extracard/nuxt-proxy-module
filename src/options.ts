@@ -1,7 +1,7 @@
 import type { Filter, Options as HttpProxyOptions } from 'http-proxy-middleware'
 export type { Options as HttpProxyOptions } from 'http-proxy-middleware'
 
-export type ProxyContext = Filter | HttpProxyOptions
+export type ProxyContext = Filter
 export type ProxyEntry = { context: ProxyContext, options: HttpProxyOptions }
 
 export type ProxyOptionsObject = { [target: string]: HttpProxyOptions }
