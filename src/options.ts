@@ -1,8 +1,8 @@
 import type { Filter, Options as HttpProxyOptions } from 'http-proxy-middleware'
 export type { Options as HttpProxyOptions } from 'http-proxy-middleware'
 
-export type ProxyContext = Filter
-export type ProxyEntry = { context: ProxyContext, options: HttpProxyOptions }
+export type ProxyContext = Filter | HttpProxyOptions
+export type ProxyEntry = { context: Filter | undefined, options: HttpProxyOptions }
 
 export type ProxyOptionsObject = { [target: string]: HttpProxyOptions }
 export type ProxyOptionsArray = Array<[ProxyContext, HttpProxyOptions?] | HttpProxyOptions | string>
@@ -33,16 +33,47 @@ export function getProxyEntries (proxyOptions: NuxtProxyOptions, defaults: HttpP
   // Array mode
   for (const input of proxyOptions) {
     if (Array.isArray(input)) {
-      proxyEntries.push({
-        context: input[0],
-        options: applyDefaults(normalizeTarget(input[1] as string))
-      })
+      const [context, opts] = input
+      // Check if context is actually HttpProxyOptions (an object with target, etc.)
+      if (typeof context === 'object' && context !== null && !Array.isArray(context) && typeof (context as any).target !== 'undefined') {
+        // context is HttpProxyOptions, merge it into options
+        proxyEntries.push({
+          context: undefined,
+          options: applyDefaults({ ...context, ...opts })
+        })
+      } else {
+        // context is a Filter (string, string[], or function)
+        proxyEntries.push({
+          context: context as Filter,
+          options: applyDefaults(normalizeTarget(opts as string))
+        })
+      }
     } else if (typeof input === 'object') {
-      const { context, options } = input as ProxyEntry
-      proxyEntries.push({
-        context,
-        options: applyDefaults(normalizeTarget(options))
-      })
+      const entry = input as any
+      // Check if this is a ProxyEntry with context and options
+      if ('context' in entry && 'options' in entry) {
+        const { context, options } = entry
+        // Check if context is actually HttpProxyOptions
+        if (typeof context === 'object' && context !== null && !Array.isArray(context) && typeof (context as any).target !== 'undefined') {
+          // context is HttpProxyOptions, merge it into options
+          proxyEntries.push({
+            context: undefined,
+            options: applyDefaults({ ...context, ...normalizeTarget(options) })
+          })
+        } else {
+          // context is a Filter
+          proxyEntries.push({
+            context: context as Filter,
+            options: applyDefaults(normalizeTarget(options))
+          })
+        }
+      } else {
+        // This is just HttpProxyOptions
+        proxyEntries.push({
+          context: undefined,
+          options: applyDefaults(normalizeTarget(input))
+        })
+      }
     } else {
       proxyEntries.push({
         context: input,

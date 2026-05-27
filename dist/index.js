@@ -20,16 +20,39 @@ function getProxyEntries(proxyOptions, defaults) {
   }
   for (const input of proxyOptions) {
     if (Array.isArray(input)) {
-      proxyEntries.push({
-        context: input[0],
-        options: applyDefaults(normalizeTarget(input[1]))
-      });
+      const [context, opts] = input;
+      if (typeof context === "object" && context !== null && !Array.isArray(context) && typeof context.target !== "undefined") {
+        proxyEntries.push({
+          context: void 0,
+          options: applyDefaults({ ...context, ...opts })
+        });
+      } else {
+        proxyEntries.push({
+          context,
+          options: applyDefaults(normalizeTarget(opts))
+        });
+      }
     } else if (typeof input === "object") {
-      const { context, options } = input;
-      proxyEntries.push({
-        context,
-        options: applyDefaults(normalizeTarget(options))
-      });
+      const entry = input;
+      if ("context" in entry && "options" in entry) {
+        const { context, options } = entry;
+        if (typeof context === "object" && context !== null && !Array.isArray(context) && typeof context.target !== "undefined") {
+          proxyEntries.push({
+            context: void 0,
+            options: applyDefaults({ ...context, ...normalizeTarget(options) })
+          });
+        } else {
+          proxyEntries.push({
+            context,
+            options: applyDefaults(normalizeTarget(options))
+          });
+        }
+      } else {
+        proxyEntries.push({
+          context: void 0,
+          options: applyDefaults(normalizeTarget(input))
+        });
+      }
     } else {
       proxyEntries.push({
         context: input,
@@ -52,13 +75,14 @@ const proxyModule = function(options) {
   };
   const proxyEntries = getProxyEntries(nuxt.options.proxy, defaults);
   for (const proxyEntry of proxyEntries) {
+    const middlewareOptions = { ...proxyEntry.options };
+    if (proxyEntry.context !== void 0) {
+      middlewareOptions.pathFilter = proxyEntry.context;
+    }
     this.addServerMiddleware({
       prefix: false,
       // http-proxy-middleware uses req.originalUrl
-      handler: httpProxyMiddleware.createProxyMiddleware({
-        ...proxyEntry.options,
-        pathFilter: proxyEntry.context
-      })
+      handler: httpProxyMiddleware.createProxyMiddleware(middlewareOptions)
     });
   }
 };

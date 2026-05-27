@@ -27,12 +27,13 @@ const proxyModule: Module<HttpProxyOptions> = function (options: HttpProxyOption
   // Register middleware
   for (const proxyEntry of proxyEntries) {
     // https://github.com/chimurai/http-proxy-middleware
+    const middlewareOptions: any = { ...proxyEntry.options }
+    if (proxyEntry.context !== undefined) {
+      middlewareOptions.pathFilter = proxyEntry.context
+    }
     this.addServerMiddleware({
       prefix: false, // http-proxy-middleware uses req.originalUrl
-      handler: createProxyMiddleware({
-        ...proxyEntry.options,
-        pathFilter: proxyEntry.context
-      })
+      handler: createProxyMiddleware(middlewareOptions)
     } as any)
   }
 }

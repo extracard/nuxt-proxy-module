@@ -1,7 +1,7 @@
 import { Module } from '@nuxt/types';
 import { Options, Filter } from 'http-proxy-middleware';
 
-type ProxyContext = Filter;
+type ProxyContext = Filter | Options;
 type ProxyOptionsObject = {
     [target: string]: Options;
 };
