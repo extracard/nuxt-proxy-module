@@ -55,10 +55,7 @@ const proxyModule = function(options) {
     this.addServerMiddleware({
       prefix: false,
       // http-proxy-middleware uses req.originalUrl
-      handler: httpProxyMiddleware.createProxyMiddleware({
-        ...proxyEntry.options,
-        pathFilter: proxyEntry.context
-      })
+      handler: httpProxyMiddleware.createProxyMiddleware(proxyEntry.context, proxyEntry.options)
     });
   }
 };
