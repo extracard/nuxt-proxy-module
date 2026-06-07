@@ -1,3 +1,4 @@
 module.exports = {
-  preset: '@nuxt/test-utils'
+  preset: '@nuxt/test-utils',
+  transformIgnorePatterns: ['/node_modules/(?!devalue/)']
 }
