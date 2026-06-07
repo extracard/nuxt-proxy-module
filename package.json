@@ -82,7 +82,7 @@
     "ws": "8.21.0"
   },
   "dependencies": {
-    "http-proxy-middleware": "^2.0.7"
+    "http-proxy-middleware": "^3.0.5"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.24.7",
@@ -91,7 +91,7 @@
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "eslint": "^8.57.1",
     "jest": "^29.7.0",
-    "nuxt": "^2.14.12",
+    "nuxt": "^3.21.6",
     "siroc": "^0.16.0",
     "standard-version": "^9.5.0"
   },
