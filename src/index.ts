@@ -1,4 +1,4 @@
-import { createProxyMiddleware } from 'http-proxy-middleware'
+import { createProxyMiddleware, RequestHandler } from 'http-proxy-middleware'
 import type { Module } from '@nuxt/types'
 import { HttpProxyOptions, getProxyEntries, NuxtProxyOptions } from './options'
 
@@ -29,8 +29,8 @@ const proxyModule: Module<HttpProxyOptions> = function (options: HttpProxyOption
     // https://github.com/chimurai/http-proxy-middleware
     this.addServerMiddleware({
       prefix: false, // http-proxy-middleware uses req.originalUrl
-      handler: createProxyMiddleware(proxyEntry.context, proxyEntry.options)
-    } as any)
+      handler: createProxyMiddleware(proxyEntry.context, proxyEntry.options) as RequestHandler
+    })
   }
 }
 
