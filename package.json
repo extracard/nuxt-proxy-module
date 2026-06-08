@@ -42,7 +42,6 @@
     "handlebars": "4.7.9",
     "hosted-git-info": "3.0.8",
     "http-cache-semantics": "4.1.1",
-    "http-proxy-middleware": "2.0.9",
     "ip": "1.1.9",
     "js-yaml": "3.14.2",
     "json-schema": "0.4.0",

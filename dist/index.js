@@ -52,10 +52,12 @@ const proxyModule = function(options) {
   };
   const proxyEntries = getProxyEntries(nuxt.options.proxy, defaults);
   for (const proxyEntry of proxyEntries) {
+    const middlewareOptions = {
+      ...proxyEntry.options,
+      pathFilter: proxyEntry.context
+    };
     this.addServerMiddleware({
-      prefix: false,
-      // http-proxy-middleware uses req.originalUrl
-      handler: httpProxyMiddleware.createProxyMiddleware(proxyEntry.context, proxyEntry.options)
+      handler: httpProxyMiddleware.createProxyMiddleware(middlewareOptions)
     });
   }
 };

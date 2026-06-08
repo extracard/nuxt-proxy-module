@@ -27,9 +27,13 @@ const proxyModule: Module<HttpProxyOptions> = function (options: HttpProxyOption
   // Register middleware
   for (const proxyEntry of proxyEntries) {
     // https://github.com/chimurai/http-proxy-middleware
+    // In v3, pathFilter is part of options instead of a separate context parameter
+    const middlewareOptions = {
+      ...proxyEntry.options,
+      pathFilter: proxyEntry.context
+    }
     this.addServerMiddleware({
-      prefix: false, // http-proxy-middleware uses req.originalUrl
-      handler: createProxyMiddleware(proxyEntry.context, proxyEntry.options) as RequestHandler
+      handler: createProxyMiddleware(middlewareOptions) as RequestHandler
     })
   }
 }
