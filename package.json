@@ -17,6 +17,8 @@
     "test": "yarn lint && jest"
   },
   "resolutions": {
+    "**/asn1.js/bn.js": "4.12.3",
+    "**/read-pkg/normalize-package-data/semver": "5.7.2",
     "@babel/plugin-transform-modules-systemjs": "7.29.4",
     "@babel/traverse": "7.29.7",
     "ansi-regex": "5.0.1",
@@ -40,12 +42,11 @@
     "handlebars": "4.7.9",
     "hosted-git-info": "3.0.8",
     "http-cache-semantics": "4.1.1",
-    "http-proxy-middleware": "2.0.7",
     "ip": "1.1.9",
     "js-yaml": "3.14.2",
     "json-schema": "0.4.0",
     "json5": "2.2.2",
-    "loader-utils": "2.0.3",
+    "loader-utils": "2.0.4",
     "lodash": "4.18.1",
     "lodash.template": "4.18.1",
     "micromatch": "4.0.8",
